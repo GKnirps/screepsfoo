@@ -25,7 +25,7 @@ const buryCreeps = function(game, memory) {
 };
 
 const spawnCreepsAsNecessary = function(creeps, spawn) {
-    const creepCount = creepSpawner.countCreepsByRole(creeps);
+    const creepCount = countCreepsByRole(creeps);
     if (!(roles.HARVESTER in creepCount) || creepCount[roles.HARVESTER] < 1) {
         var newName = spawn.createCreep([WORK,CARRY,MOVE], undefined, {role: roles.HARVESTER});
         console.log("Spawned new harvester: " + newName);
