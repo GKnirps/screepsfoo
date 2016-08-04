@@ -47,7 +47,7 @@ const spawnCreepsAsNecessary = function(creeps, spawn) {
 
 }
 
-const manageCreeps(game, memory) {
+const manageCreeps = function(game, memory) {
   buryCreeps(game, memory);
   spawnCreepsAsNecessary(game.creeps, Game.spawns['Nest']);
 }
