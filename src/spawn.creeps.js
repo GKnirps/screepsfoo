@@ -4,7 +4,7 @@ const countCreepsByRole = function(creeps) {
     return _.reduce(_.values(creeps), (counter, creep) => {
         const role = creep.memory.role;
         if (!role) {
-            console.log('Creep ' + creep.name + ' has no name. Cannot count this creep.');
+            console.log('Creep ' + creep.name + ' has no role. Cannot count this creep.');
             return counter;
         }
         if (!(role in counter)) {
@@ -50,7 +50,7 @@ const spawnCreepsAsNecessary = function(creeps, spawn) {
     }
 
     // panic mode! spawn attackers with priority if there are enemies
-    if (spawn.room.find(HOSTILE_CREEPS)) {
+    if (spawn.room.find(FIND_HOSTILE_CREEPS)) {
       if (!(roles.ATTACKER in creepCount) || creepCount[roles.ATTACKER] < 3) {
           var newName = spawn.createCreep([ATTACK, ATTACK,MOVE, MOVE], undefined, {role: roles.ATTACKER});
           console.log("Spawned new attacker: " + newName);
