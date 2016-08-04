@@ -9,7 +9,7 @@ const roleBehaviors = {};
 roleBehaviors[roles.HARVESTER] = roleHarvester;
 roleBehaviors[roles.UPGRADER] = roleUpgrader;
 roleBehaviors[roles.BUILDER] = roleBuilder;
-roleBehaviors[roles.AATTACKER] = roleAttacker;
+roleBehaviors[roles.ATTACKER] = roleAttacker;
 
 module.exports.loop = function () {
     creepSpawner.manageCreeps(Game, Memory);
