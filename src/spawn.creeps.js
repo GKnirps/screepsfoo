@@ -49,9 +49,12 @@ const spawnCreepsAsNecessary = function(creeps, spawn) {
       workerTemplate = ADVANCED_WORKER;
     }
 
-    if (!(roles.ATTACKER in creepCount) || creepCount[roles.ATTACKER] < 1) {
-        var newName = spawn.createCreep([ATTACK, ATTACK,MOVE, MOVE], undefined, {role: roles.ATTACKER});
-        console.log("Spawned new attacker: " + newName);
+    // panic mode! spawn attackers with priority if there are enemies
+    if (spawn.room.find(HOSTILE_CREEPS)) {
+      if (!(roles.ATTACKER in creepCount) || creepCount[roles.ATTACKER] < 3) {
+          var newName = spawn.createCreep([ATTACK, ATTACK,MOVE, MOVE], undefined, {role: roles.ATTACKER});
+          console.log("Spawned new attacker: " + newName);
+      }
     }
     if (!(roles.HARVESTER in creepCount) || creepCount[roles.HARVESTER] < 1) {
         // if we do not have any harvesters, and not enough to build a big one, build a small one to get things going.
@@ -71,6 +74,10 @@ const spawnCreepsAsNecessary = function(creeps, spawn) {
             var newName = spawn.createCreep(workerTemplate, undefined, {role: roles.BUILDER});
             console.log("Spawned new builder: " + newName);
         }
+    }
+    if (!(roles.ATTACKER in creepCount) || creepCount[roles.ATTACKER] < 1) {
+        var newName = spawn.createCreep([ATTACK, ATTACK,MOVE, MOVE], undefined, {role: roles.ATTACKER});
+        console.log("Spawned new attacker: " + newName);
     }
 }
 
