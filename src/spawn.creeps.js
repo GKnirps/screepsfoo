@@ -56,14 +56,14 @@ const spawnCreepsAsNecessary = function(creeps, spawn) {
           console.log("Spawned new attacker: " + newName);
       }
     }
-    if (!(roles.HARVESTER in creepCount) || creepCount[roles.HARVESTER] < 1) {
-        // if we do not have any harvesters, and not enough to build a big one, build a small one to get things going.
-        let harvesterTemplate = workerTemplate;
-        if (energy < 500 && !creepCount[roles.HARVESTER]) {
-          harvesterTemplate = BASIC_WORKER;
+    if (!(roles.SPAWN_MAINTAINER in creepCount) || creepCount[roles.SPAWN_MAINTAINER] < 1) {
+        // if we do not have any spawn maintainer, and not enough to build a big one, build a small one to get things going.
+        let maintainerTemplate = workerTemplate;
+        if (energy < 500 && !creepCount[roles.SPAWN_MAINTAINER]) {
+          maintainerTemplate = BASIC_WORKER;
         }
-        var newName = spawn.createCreep(workerTemplate, undefined, {role: roles.HARVESTER});
-        console.log("Spawned new harvester: " + newName);
+        var newName = spawn.createCreep(workerTemplate, undefined, {role: roles.SPAWN_MAINTAINER});
+        console.log("Spawned new spawn maintainer: " + newName);
     }
     if (!(roles.UPGRADER in creepCount) || creepCount[roles.UPGRADER] < 2) {
         var newName = spawn.createCreep(workerTemplate, undefined, {role: roles.UPGRADER});

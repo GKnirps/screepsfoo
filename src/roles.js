@@ -2,5 +2,6 @@ module.exports = {
     HARVESTER: 'harvester',
     UPGRADER: 'upgrader',
     BUILDER: 'builder',
-    ATTACKER: 'attacker'
+    ATTACKER: 'attacker',
+    SPAWN_MAINTAINER: 'spawn_maintainer';
 };

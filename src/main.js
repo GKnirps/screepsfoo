@@ -1,4 +1,5 @@
 const roleHarvester = require('role.harvester');
+const roleSpawnMaintainer = require('role.spawnmaintainer');
 const roleUpgrader = require('role.upgrader');
 const roleBuilder = require('role.builder');
 const roleAttacker = require('role.attacker');
@@ -10,6 +11,7 @@ roleBehaviors[roles.HARVESTER] = roleHarvester;
 roleBehaviors[roles.UPGRADER] = roleUpgrader;
 roleBehaviors[roles.BUILDER] = roleBuilder;
 roleBehaviors[roles.ATTACKER] = roleAttacker;
+roleBehaviors[roles.SPAWN_MAINTAINER] = roleSpawnMaintainer;
 
 module.exports.loop = function () {
     try {
