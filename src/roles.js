@@ -3,5 +3,5 @@ module.exports = {
     UPGRADER: 'upgrader',
     BUILDER: 'builder',
     ATTACKER: 'attacker',
-    SPAWN_MAINTAINER: 'spawn_maintainer';
+    SPAWN_MAINTAINER: 'spawn_maintainer'
 };
