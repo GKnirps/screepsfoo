@@ -69,7 +69,7 @@ const spawnCreepsAsNecessary = function(creeps, spawn) {
         var newName = spawn.createCreep(workerTemplate, undefined, {role: roles.UPGRADER});
         console.log("Spawned new upgrader: " + newName);
     }
-    if (!(roles.BUILDER in creepCount) || creepCount[roles.BUILDER] < 2) {
+    if (!(roles.BUILDER in creepCount) || creepCount[roles.BUILDER] < 1) {
         if (spawn.room.find(FIND_CONSTRUCTION_SITES)) {
             var newName = spawn.createCreep(workerTemplate, undefined, {role: roles.BUILDER});
             console.log("Spawned new builder: " + newName);
