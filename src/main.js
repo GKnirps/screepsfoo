@@ -12,13 +12,21 @@ roleBehaviors[roles.BUILDER] = roleBuilder;
 roleBehaviors[roles.ATTACKER] = roleAttacker;
 
 module.exports.loop = function () {
-    creepSpawner.manageCreeps(Game, Memory);
+    try {
+      creepSpawner.manageCreeps(Game, Memory);
+    } catch (err) {
+      console.log('Error while managing creep spawning. Resuming other tasks. Error: ' + err);
+    }
 
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
         const behavior = roleBehaviors[creep.memory.role];
         if (behavior) {
-            behavior.run(creep);
+            try {
+              behavior.run(creep);
+            } catch (err) {
+              console.log('Error while running creep ' + name + ' with role ' + creep.memory.role + '. Resuming other creeps. Error:' + err);
+            }
         }
     }
 }
