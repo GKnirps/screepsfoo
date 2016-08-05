@@ -17,7 +17,11 @@ module.exports = {
     */
     findClosestSourceToObject: function(room, target) {
         const sources = room.find(FIND_SOURCES);
-        return _.min(sources, source => squareDistance(source, target));
+        const min = _.min(sources, source => squareDistance(source, target));
+        if (typeof min === 'number' && !isFinite(min)) {
+          return null;
+        }
+        return min;
     },
     
     /**
@@ -40,6 +44,10 @@ module.exports = {
                     structure.energy < structure.energyCapacity;
             }
         });
-        return _.min(targets, target => squareDistance(target, creep));
+        const min = _.min(targets, target => squareDistance(target, creep));
+        if (typeof min === 'number' && !isFinite(min)) {
+          return null;
+        }
+        return min;
     }
 }
