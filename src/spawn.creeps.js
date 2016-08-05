@@ -50,7 +50,7 @@ const spawnCreepsAsNecessary = function(creeps, spawn) {
     }
 
     // panic mode! spawn attackers with priority if there are enemies
-    if (spawn.room.find(FIND_HOSTILE_CREEPS)) {
+    if (spawn.room.find(FIND_HOSTILE_CREEPS).length > 0) {
       if (!(roles.ATTACKER in creepCount) || creepCount[roles.ATTACKER] < 3) {
           var newName = spawn.createCreep([ATTACK, ATTACK,MOVE, MOVE], undefined, {role: roles.ATTACKER});
           console.log("Spawned new attacker: " + newName);
