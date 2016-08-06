@@ -108,6 +108,13 @@ const spawnCreepsAsNecessary = function(creeps, spawn) {
         var newName = spawn.createCreep([ATTACK, ATTACK,MOVE, MOVE], undefined, {role: roles.ATTACKER});
         console.log("Spawned new attacker: " + newName);
     }
+    if (!(roles.REPAIRMAN in creepCount) || creepCount[roles.REPAIRMAN] < 1) {
+      // We only start repairing if the room has a minimum capacity
+      if (capacity >= 500) {
+        var newName = spawn.createCreep(workerTemplate, undefined, {role: roles.REPAIRMAN});
+        console.log("It's BICYCLE REPAIR MAN!: " + newName);
+      }
+    }
     spawnHarvesterAsNecessary(creepCount, spawn, capacity);
 }
 

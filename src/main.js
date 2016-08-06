@@ -3,6 +3,7 @@ const roleSpawnMaintainer = require('role.spawnmaintainer');
 const roleUpgrader = require('role.upgrader');
 const roleBuilder = require('role.builder');
 const roleAttacker = require('role.attacker');
+const roleRepairman = require('role.repairman');
 const creepSpawner = require('spawn.creeps');
 const roles = require('roles');
 
@@ -12,6 +13,7 @@ roleBehaviors[roles.UPGRADER] = roleUpgrader;
 roleBehaviors[roles.BUILDER] = roleBuilder;
 roleBehaviors[roles.ATTACKER] = roleAttacker;
 roleBehaviors[roles.SPAWN_MAINTAINER] = roleSpawnMaintainer;
+roleBehaviors{roles.REPAIRMAN] = roleRepairman;
 
 module.exports.loop = function () {
     try {
