@@ -36,7 +36,7 @@ const buryCreeps = function(game, memory) {
     }
 };
 
-const BASIC_WORKER = [WORK, CARRY, MOVE]; // cost: 200
+const BASIC_WORKER = [WORK, WORK, CARRY, MOVE]; // cost: 300
 const ADVANCED_WORKER = [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE]; // cost: 500
 
 const spawnCreepsAsNecessary = function(creeps, spawn) {
@@ -62,7 +62,7 @@ const spawnCreepsAsNecessary = function(creeps, spawn) {
         if (energy < 500 && !creepCount[roles.SPAWN_MAINTAINER]) {
           maintainerTemplate = BASIC_WORKER;
         }
-        var newName = spawn.createCreep(workerTemplate, undefined, {role: roles.SPAWN_MAINTAINER});
+        var newName = spawn.createCreep(maintainerTemplate, undefined, {role: roles.SPAWN_MAINTAINER});
         console.log("Spawned new spawn maintainer: " + newName);
     }
     if (!(roles.UPGRADER in creepCount) || creepCount[roles.UPGRADER] < 2) {
