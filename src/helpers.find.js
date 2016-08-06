@@ -67,8 +67,8 @@ module.exports = {
      * @param {string} role
      */
     findCreepsInRoomByRole: function(room, role) {
-      return room.find(FIND_MY_CREEPS, (creep) => {
+      return room.find(FIND_MY_CREEPS, {filter: (creep) => {
         return creep.memory.role === role;
-      });
+      }});
     }
 }
