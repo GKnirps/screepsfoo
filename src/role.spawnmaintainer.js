@@ -14,23 +14,23 @@ const roleSpawnMaintainer = {
             if (!creep.memory.delivering && creep.carry.energy === creep.carryCapacity) {
               creep.memory.delivering = true;
             }
-            if(!delivering) {
-                const source = findHelpers.findClosestSourceToObject(creep.room, target);
-                if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(source);
-                }
+            if(creep.memory.delivering) {
+              if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(target);
+              }
+              if (creep.energy === 0) {
+                creep.memory.delivering = false;
+              }
             }
             else {
                 // if no harvesters are present, harvest for yourself.
                 if (findHelpers.findCreepsInRoomByRole(creep.room, roles.HARVESTER).length === 0) {
-                  if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(target);
+                  const source = findHelpers.findClosestSourceToObject(creep.room, target);
+                  if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
+                      creep.moveTo(source);
                   }
                 } else {
                   common.getEnergyFromClosestHarvester(creep);
-                }
-                if (creep.energy === 0) {
-                  creep.memory.delivery = false;
                 }
             } 
         } else {

@@ -17,7 +17,7 @@ const squareDistance = function(p1, p2) {
  * @return {?RoomObject} null if objects is empty, closest object to pos otherwise
  */
 const getClosestObjectFromList = function(pos, objects) {
-  const min = _.min(objects, object => squareDistance(object.pos, pos);
+  const min = _.min(objects, object => squareDistance(object.pos, pos));
   if (typeof min === 'number' && !isFinite(min)) {
     return null;
   }
@@ -25,7 +25,7 @@ const getClosestObjectFromList = function(pos, objects) {
 }
 
 module.exports = {
-    getClosestObjectFromList: getClosestObjectFromList;
+    getClosestObjectFromList: getClosestObjectFromList,
 
     /**
      * returns source with shortest bee-line distance to the given object in the room
@@ -59,7 +59,7 @@ module.exports = {
             }
         });
         return getClosestObjectFromList(creep.pos, target);
-    }
+    },
 
     /**
      * Returns all creeps in the room with a specific role
@@ -69,6 +69,6 @@ module.exports = {
     findCreepsInRoomByRole: function(room, role) {
       return room.find(FIND_MY_CREEPS, (creep) => {
         return creep.memory.role === role;
-      }
+      });
     }
 }

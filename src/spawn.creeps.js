@@ -38,10 +38,10 @@ const buryCreeps = function(game, memory) {
 
 const BASIC_WORKER = [WORK, WORK, CARRY, MOVE]; // cost: 300
 const BASIC_SPAWN_MAINTAINER = [WORK, CARRY, CARRY, MOVE, MOVE]; // cost: 300
-const ADVANCED_SPAEN_MAINTAINER = [WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE]; // cost: 450
+const ADVANCED_SPAWN_MAINTAINER = [WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE]; // cost: 450
 const ADVANCED_WORKER = [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE]; // cost: 500
 
-const costForBody(body) {
+const costForBody = function(body) {
   return _.reduce(body, (part) => BODYPART_COST[part], 0);
 }
 

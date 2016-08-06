@@ -1,7 +1,7 @@
 const findHelpers = require('helpers.find');
 const roles = require('roles');
 
-associateSource: function(creep) {
+const associateSource = function(creep) {
   if (creep.memory.sourceId) {
     // we already have a source, ignore this.
     return;
@@ -9,14 +9,14 @@ associateSource: function(creep) {
   const sources = creep.room.find(FIND_SOURCES);
   const harvesters = findHelpers.findCreepsInRoomByRole(creep.room, roles.HARVESTER);
 
-  const sourceIds = _.map(sources, (source) => source.id;
-  const harvesterSourceIds = _.map(harvesters, (harv) => harvester.memory.sourceId;
+  const sourceIds = _.map(sources, (source) => source.id);
+  const harvesterSourceIds = _.map(harvesters, (harv) => harvester.memory.sourceId);
 
   const unassociatedSources = _.filter(sourceIds, (id) => !(id in harvesterSourceIds));
 
   if (unassociatedSources.length === 0) {
     // TODO: notify player when this happens?
-    console.log("We have one harvester more than we need. Why?"
+    console.log("We have one harvester more than we need. Why?");
     return;
   }
 
