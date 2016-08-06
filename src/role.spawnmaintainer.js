@@ -14,12 +14,12 @@ const roleSpawnMaintainer = {
             if (!creep.memory.delivering && creep.carry.energy === creep.carryCapacity) {
               creep.memory.delivering = true;
             }
+            if (creep.memory.delivering && creep.carry.energy === 0) {
+              creep.memory.delivering = false;
+            }
             if(creep.memory.delivering) {
               if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(target);
-              }
-              if (creep.energy === 0) {
-                creep.memory.delivering = false;
               }
             }
             else {
