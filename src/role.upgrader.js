@@ -1,4 +1,5 @@
 const findHelpers = require('helpers.find');
+const common = require('common_behaviors');
 
 var roleUpgrader = {
 
@@ -9,10 +10,7 @@ var roleUpgrader = {
         }
         const controller = creep.room.controller;
         if(!creep.memory.upgrade && creep.carry.energy < creep.carryCapacity) {
-            const source = findHelpers.findClosestSourceToObject(creep.room, controller)
-            if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(source);
-            }
+            common.getEnergyFromClosestHarvester(creep);
         }
         else {
             if(creep.upgradeController(controller) == ERR_NOT_IN_RANGE) {

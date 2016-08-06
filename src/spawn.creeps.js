@@ -37,7 +37,30 @@ const buryCreeps = function(game, memory) {
 };
 
 const BASIC_WORKER = [WORK, WORK, CARRY, MOVE]; // cost: 300
+const BASIC_SPAWN_MAINTAINER = [WORK, CARRY, CARRY, MOVE, MOVE]; // cost: 300
+const ADVANCED_SPAEN_MAINTAINER = [WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE]; // cost: 450
 const ADVANCED_WORKER = [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE]; // cost: 500
+
+const costForBody(body) {
+  return _.reduce(body, (part) => BODYPART_COST[part], 0);
+}
+
+const spawnHarvesterAsNecessary = function(creepCount, spawn, capacity) {
+  const sourcesCount = spawn.room.find(FIND_SOURCES).length;
+  // we need no more than one harvester for each source
+  if (creepCount[roles.HARVESTER] < sourcesCount) {
+    const basicConfig = [CARRY, MOVE];
+    const basicCost = costForBody(basicConfig);
+
+    const capacityLeftForWork = capacity - basicCost;
+    // TODO: this may need work, sor large capacities this may end in a problem...
+    const numberOfWorkParts = Math.floor(capacityLeftForWork / BODYPART_COST[WORK]);
+    
+    const body = Array(numberOfWorkParts).fill(WORK).concat(basicConfig);
+    var newName = spawn.createCreep(body, undefined, {role: roles.HARVESTER});
+    console.log("Spawned new harvester: " + newName);
+  }
+}
 
 const spawnCreepsAsNecessary = function(creeps, spawn) {
     const creepCount = countCreepsByRole(creeps);
@@ -56,11 +79,16 @@ const spawnCreepsAsNecessary = function(creeps, spawn) {
           console.log("Spawned new attacker: " + newName);
       }
     }
-    if (!(roles.SPAWN_MAINTAINER in creepCount) || creepCount[roles.SPAWN_MAINTAINER] < 1) {
+    let requiredSpawnMaintainers = 1;
+    if (capacity >= 450) {
+      requiredSpawnMaintainers = 2;
+    }
+    const availableSpawnMaintainers = (roles.SPAWN_MAINTAINER in creepCount) ? creepCount[roles.SPAWN_MAINTAINER] : 0;
+    if (availableSpawnMaintainers < requiredSpawnMaintainers) {
         // if we do not have any spawn maintainer, and not enough to build a big one, build a small one to get things going.
-        let maintainerTemplate = workerTemplate;
-        if (energy < 500 && !creepCount[roles.SPAWN_MAINTAINER]) {
-          maintainerTemplate = BASIC_WORKER;
+        let maintainerTemplate = ADVANCED_SPAWN_MAINTAINER;
+        if (energy < 450 && availableSpawnMaintainers === 0) {
+          maintainerTemplate = BASIC_SPAWN_MAINTAINER;
         }
         var newName = spawn.createCreep(maintainerTemplate, undefined, {role: roles.SPAWN_MAINTAINER});
         console.log("Spawned new spawn maintainer: " + newName);

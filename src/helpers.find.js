@@ -1,27 +1,41 @@
+const roles = require('roles')
+
 /**
  * Square bee-line distance between two RoomObjects
- * @params {!RoomObject} o1
- * @params {!RoomObject} o2
+ * @params {!RoomPosition} p1
+ * @params {!RoomPosition} p2
  * @return {number}
  */
-const squareDistance = function(o1, o2) {
-    return Math.pow(o1.pos.x - o2.pos.x, 2) + Math.pow(o1.pos.y - o2.pos.y, 2);
+const squareDistance = function(p1, p2) {
+    return Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2);
 };
 
+/**
+ * Returns the the object in the list that is the closest to pos (bee-line).
+ * @params {!RoomPosition} pos
+ * @params {!Array.<RoomObject>} objects
+ * @return {?RoomObject} null if objects is empty, closest object to pos otherwise
+ */
+const getClosestObjectFromList = function(pos, objects) {
+  const min = _.min(objects, object => squareDistance(object.pos, pos);
+  if (typeof min === 'number' && !isFinite(min)) {
+    return null;
+  }
+  return min;
+}
+
 module.exports = {
+    getClosestObjectFromList: getClosestObjectFromList;
+
     /**
      * returns source with shortest bee-line distance to the given object in the room
-     * Right now, it works only if both objects are in the same room.
+     * It works only if both objects are in the same room.
      * @params {Room} room
      * @params {RoomObject} target
     */
     findClosestSourceToObject: function(room, target) {
         const sources = room.find(FIND_SOURCES);
-        const min = _.min(sources, source => squareDistance(source, target));
-        if (typeof min === 'number' && !isFinite(min)) {
-          return null;
-        }
-        return min;
+        return getClosestObjectFromList(target.pos, sources);
     },
     
     /**
@@ -44,10 +58,17 @@ module.exports = {
                     structure.energy < structure.energyCapacity;
             }
         });
-        const min = _.min(targets, target => squareDistance(target, creep));
-        if (typeof min === 'number' && !isFinite(min)) {
-          return null;
-        }
-        return min;
+        return getClosestObjectFromList(creep.pos, target);
+    }
+
+    /**
+     * Returns all creeps in the room with a specific role
+     * @param {!Room} room
+     * @param {string} role
+     */
+    findCreepsInRoomByRole: function(room, role) {
+      return room.find(FIND_MY_CREEPS, (creep) => {
+        return creep.memory.role === role;
+      }
     }
 }

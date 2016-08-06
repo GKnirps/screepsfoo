@@ -1,4 +1,6 @@
 const findHelpers = require('helpers.find');
+const common = require('common_behaviors');
+const roles = require('roles');
 
 const roleSpawnMaintainer = {
 
@@ -9,15 +11,26 @@ const roleSpawnMaintainer = {
             if (creep.memory.harvestTargetId !== target.id) {
                 creep.memory.harvestTargetId = target.id;
             }
-            if(creep.carry.energy < creep.carryCapacity) {
+            if (!creep.memory.delivering && creep.carry.energy === creep.carryCapacity) {
+              creep.memory.delivering = true;
+            }
+            if(!delivering) {
                 const source = findHelpers.findClosestSourceToObject(creep.room, target);
                 if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(source);
                 }
             }
             else {
-                if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                // if no harvesters are present, harvest for yourself.
+                if (findHelpers.findCreepsInRoomByRole(creep.room, roles.HARVESTER).length === 0) {
+                  if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(target);
+                  }
+                } else {
+                  common.getEnergyFromClosestHarvester(creep);
+                }
+                if (creep.energy === 0) {
+                  creep.memory.delivery = false;
                 }
             } 
         } else {
