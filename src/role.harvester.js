@@ -38,7 +38,7 @@ const roleHarvester = {
       const source = Game.getObjectById(sourceId);
 
       // go to that source and harvest
-      if (creep.energy < creep.carryCapacity) {
+      if (creep.carry.energy < creep.carryCapacity) {
         if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
           creep.moveTo(source);
         }
