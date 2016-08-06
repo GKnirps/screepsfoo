@@ -10,7 +10,7 @@ const associateSource = function(creep) {
   const harvesters = findHelpers.findCreepsInRoomByRole(creep.room, roles.HARVESTER);
 
   const sourceIds = _.map(sources, (source) => source.id);
-  const harvesterSourceIds = _.map(harvesters, (harv) => harvester.memory.sourceId);
+  const harvesterSourceIds = _.map(harvesters, (harv) => harv.memory.sourceId);
 
   const unassociatedSources = _.filter(sourceIds, (id) => !(id in harvesterSourceIds));
 
@@ -41,6 +41,11 @@ const roleHarvester = {
       if (creep.carry.energy < creep.carryCapacity) {
         if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
           creep.moveTo(source);
+          // this is only for other creeps to recognize if this creep is on the move or harvesting
+          // because harvesters are slow and if other creeps swarm the harvester, it won't find reach the source.
+          creep.memory.harvesting = false;
+        } else {
+          creep.memory.harvesting = true;
         }
       }
       // never move away anymore, other creeps can get their energy from this harvester
