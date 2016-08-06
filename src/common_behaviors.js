@@ -6,7 +6,7 @@ const getEnergyFromClosestHarvester = function(creep) {
   const harvesters = findHelpers.findCreepsInRoomByRole(creep.room, roles.HARVESTER);
   const closestHarvester = findHelpers.getClosestObjectFromList(creep.pos, harvesters);
 
-  if (closestHarvester.transfer(creep) === ERR_NOT_IN_RANGE) {
+  if (closestHarvester && closestHarvester.transfer(creep) === ERR_NOT_IN_RANGE) {
     creep.moveTo(closestHarvester);
   }
 }

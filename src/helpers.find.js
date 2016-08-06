@@ -58,7 +58,7 @@ module.exports = {
                     structure.energy < structure.energyCapacity;
             }
         });
-        return getClosestObjectFromList(creep.pos, target);
+        return getClosestObjectFromList(creep.pos, targets);
     },
 
     /**
