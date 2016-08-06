@@ -5,7 +5,7 @@ const isValidRepairTarget = function(structure) {
   if (!structure.my && structure.structureType !== STRUCTURE_ROAD && structure.structureType !== STRUCTURE_WALL) {
     return false;
   }
-  if (structure.structureType === STRUCTURE_WALL && structure.structureType === STRUCTURE_RAMPART) {
+  if (structure.structureType === STRUCTURE_WALL || structure.structureType === STRUCTURE_RAMPART) {
     if (structure.hits > 100) {
       return false;
     }
