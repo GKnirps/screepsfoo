@@ -42,13 +42,14 @@ const ADVANCED_SPAWN_MAINTAINER = [WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE,
 const ADVANCED_WORKER = [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE]; // cost: 500
 
 const costForBody = function(body) {
-  return _.reduce(body, (part) => BODYPART_COST[part], 0);
+  return _.reduce(body, (sum, part) => sum + BODYPART_COST[part], 0);
 }
 
 const spawnHarvesterAsNecessary = function(creepCount, spawn, capacity) {
   const sourcesCount = spawn.room.find(FIND_SOURCES).length;
   // we need no more than one harvester for each source
-  if (creepCount[roles.HARVESTER] < sourcesCount) {
+  const harvesterCount = creepCount[roles.HARVESTER];
+  if (!harvesterCount || harvesterCount < sourcesCount) {
     const basicConfig = [CARRY, MOVE];
     const basicCost = costForBody(basicConfig);
 
