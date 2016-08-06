@@ -12,7 +12,13 @@ const associateSource = function(creep) {
   const sourceIds = _.map(sources, (source) => source.id);
   const harvesterSourceIds = _.map(harvesters, (harv) => harv.memory.sourceId);
 
-  const unassociatedSources = _.filter(sourceIds, (id) => !(id in harvesterSourceIds));
+  const unassociatedSources = _.filter(sourceIds, id => {
+    let found = false;
+    for(i=0; i<harvesterSourceIds.length; i++) {
+      found = found || harvesterSourceIds[i] === id;
+    }
+    return !found;
+  });
 
   if (unassociatedSources.length === 0) {
     // TODO: notify player when this happens?
