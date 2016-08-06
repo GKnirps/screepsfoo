@@ -107,6 +107,7 @@ const spawnCreepsAsNecessary = function(creeps, spawn) {
         var newName = spawn.createCreep([ATTACK, ATTACK,MOVE, MOVE], undefined, {role: roles.ATTACKER});
         console.log("Spawned new attacker: " + newName);
     }
+    spawnHarvesterAsNecessary(creepCount, spawn, capacity);
 }
 
 const manageCreeps = function(game, memory) {
