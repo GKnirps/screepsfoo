@@ -16,8 +16,11 @@ var roleRepairman = {
             creep.memory.repairing = true;
             creep.say('repairing');
         }
-        const structures = creep.room.find(FIND_MY_STRUCTURES, {filter: structure => {
-          if (structure.structureType !== STRUCTURE_WALL && structure.structureType !== STRUCTURE_RAMPART) {
+        const structures = creep.room.find(FIND_STRUCTURES, {filter: structure => {
+          if (!structure.my && structure.structureType !== STRUCTURE_ROAD && structure.structureType !== STRUCTURE_WALL) {
+            return false;
+          }
+          if (structure.structureType === STRUCTURE_WALL && structure.structureType === STRUCTURE_RAMPART) {
             if (structure.hits > 100) {
               return false;
             }
