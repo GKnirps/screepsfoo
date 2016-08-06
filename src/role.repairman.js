@@ -41,4 +41,4 @@ var roleRepairman = {
     }
 };
 
-module.exports = roleBuilder;
+module.exports = roleRepairman;

@@ -13,7 +13,7 @@ roleBehaviors[roles.UPGRADER] = roleUpgrader;
 roleBehaviors[roles.BUILDER] = roleBuilder;
 roleBehaviors[roles.ATTACKER] = roleAttacker;
 roleBehaviors[roles.SPAWN_MAINTAINER] = roleSpawnMaintainer;
-roleBehaviors{roles.REPAIRMAN] = roleRepairman;
+roleBehaviors[roles.REPAIRMAN] = roleRepairman;
 
 module.exports.loop = function () {
     try {
