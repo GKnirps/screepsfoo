@@ -54,7 +54,7 @@ const spawnHarvesterAsNecessary = function(creepCount, spawn, capacity) {
     const basicCost = costForBody(basicConfig);
 
     const capacityLeftForWork = capacity - basicCost;
-    // TODO: this may need work, sor large capacities this may end in a problem...
+    // TODO: this may need work, so large capacities this may end in a problem...
     const numberOfWorkParts = Math.floor(capacityLeftForWork / BODYPART_COST[WORK]);
     
     const body = Array(numberOfWorkParts).fill(WORK).concat(basicConfig);

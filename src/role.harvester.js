@@ -1,6 +1,47 @@
 const findHelpers = require('helpers.find');
 const roles = require('roles');
 
+/**
+ * Find a good spot for a container where we can put the harvested energy into.
+ * This spot must be have a distance of 2 from the source, but no more than 2 on any axis.
+ * Figure: s is the source, x are the possible positions of the container.
+ *
+ * xxxxx
+ * x   x
+ * x s x
+ * x   x
+ * xxxxx
+ * Among those possible options, pick the place where
+ * 1. you can place a building
+ * 2. that has the most walkable fields around.
+ */
+const possibleStorageDPos = [
+  [-2, -2],
+  [-2, -1],
+  [-2, 0],
+  [-2, 1],
+  [-2, 2],
+  [2, -2],
+  [2, -1],
+  [2, 0],
+  [2, 1],
+  [2, 2],
+  [-1, -2],
+  [0, -2],
+  [1, -2],
+  [-1, 2],
+  [0, 2],
+  [1, 2]
+];
+
+const findSpotForContainer = function(room, sourcepos) {
+  /* TDB */ 
+};
+
+const findContainerForSource(room, pos) {
+
+};
+
 const associateSource = function(creep) {
   if (creep.memory.sourceId) {
     // we already have a source, ignore this.
@@ -30,6 +71,34 @@ const associateSource = function(creep) {
   creep.memory.sourceId = unassociatedSources[0];
 };
 
+const associateContainer = function(creep, source) {
+  if (creep.memory.containerId) {
+    // we already have a container, but does it still exist?
+    const existingContainer = Game.structures[creep.memory.containerId];
+    if (existingContainer) {
+      return existingContainer;
+    }
+  }
+
+  for (i=0; i<possibleStorageDPos.length; i++) {
+    const x = source.pos.x + possibleStorageDPos[0];
+    const y = source.pos.y + possibleStorageDPos[1];
+    const objects = source.room.lookAt(x,y);
+    containers = _.filter(objects, object => {
+      return object.type === LOOK_STRUCTURES && object[LOOK_STRUCTURES].structureType === STRUCTURE_CONTAINER;
+    }
+    if (objects.length === 0) {
+      // no container has been build yet for this creep. Just harvest without one.
+      return null;
+    }
+
+    const container = containers[0];
+    creep.memory.containerId = container.id;
+
+    return container;
+  }
+};
+
 const roleHarvester = {
 
     /** @param {Creep} creep **/
@@ -42,6 +111,10 @@ const roleHarvester = {
       }
       const sourceId = creep.memory.sourceId;
       const source = Game.getObjectById(sourceId);
+      if (!source) {
+        console.log("Trying to harvest, but harvester " + creep.name + " has no source.");
+        return
+      }
 
       // go to that source and harvest
       if (creep.carry.energy < creep.carryCapacity) {
@@ -54,8 +127,17 @@ const roleHarvester = {
           creep.memory.harvesting = true;
         }
       }
+      // fill a nearby container if available
+      const container = associateContainer(creep, source);
+      if (container) {
+        if (creep.transferTo(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+          // The container is always not more than two fields away from the source.
+          // This is guaranteed by associateContainer. So at some point, we do not have to move anymore.
+          creep.moveTo(container);
+        }
+      }
       // never move away anymore, other creeps can get their energy from this harvester
-      // TODO: initiate container building of a container for this source (if possible), fill container if internal capacity is reached
+      // TODO: initiate container building of a container for this source (if possible)
     }
 };
 
