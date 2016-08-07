@@ -38,10 +38,6 @@ const findSpotForContainer = function(room, sourcepos) {
   /* TDB */ 
 };
 
-const findContainerForSource(room, pos) {
-
-};
-
 const associateSource = function(creep) {
   if (creep.memory.sourceId) {
     // we already have a source, ignore this.
@@ -74,29 +70,28 @@ const associateSource = function(creep) {
 const associateContainer = function(creep, source) {
   if (creep.memory.containerId) {
     // we already have a container, but does it still exist?
-    const existingContainer = Game.structures[creep.memory.containerId];
+    const existingContainer = Game.getObjectById(creep.memory.containerId);
     if (existingContainer) {
       return existingContainer;
     }
   }
 
   for (i=0; i<possibleStorageDPos.length; i++) {
-    const x = source.pos.x + possibleStorageDPos[0];
-    const y = source.pos.y + possibleStorageDPos[1];
+    const x = source.pos.x + possibleStorageDPos[i][0];
+    const y = source.pos.y + possibleStorageDPos[i][1];
     const objects = source.room.lookAt(x,y);
     containers = _.filter(objects, object => {
       return object.type === LOOK_STRUCTURES && object[LOOK_STRUCTURES].structureType === STRUCTURE_CONTAINER;
-    }
-    if (objects.length === 0) {
-      // no container has been build yet for this creep. Just harvest without one.
-      return null;
-    }
+    });
+    if (containers.length === 0) {
+      const container = containers[0][LOOK_STRUCTURES];
+      creep.memory.containerId = container.id;
 
-    const container = containers[0];
-    creep.memory.containerId = container.id;
-
-    return container;
+      return container;
+    }
   }
+  // no container has been build yet for this harvester. Just harvest without one.
+  return null;
 };
 
 const roleHarvester = {
@@ -130,7 +125,7 @@ const roleHarvester = {
       // fill a nearby container if available
       const container = associateContainer(creep, source);
       if (container) {
-        if (creep.transferTo(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+        if (creep.transfer(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
           // The container is always not more than two fields away from the source.
           // This is guaranteed by associateContainer. So at some point, we do not have to move anymore.
           creep.moveTo(container);

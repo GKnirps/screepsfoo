@@ -9,7 +9,7 @@ const getEnergyFromClosestHarvester = function(creep) {
   
   // TODO: also, only look once for containers (efficiency)
   // if the harvester has a container, we take our energy from the container.
-  const container = Game.structures[closestHarvester.memory.containerId];
+  const container = Game.getObjectById(closestHarvester.memory.containerId);
   if (container && creep.withdraw(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
     creep.moveTo(container);
   } else if (closestHarvester && closestHarvester.transfer(creep, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {

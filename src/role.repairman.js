@@ -16,7 +16,7 @@ const isValidRepairTarget = function(structure) {
 const getStructureToRepair = function(creep) {
   if (creep.memory.repairTargetId) {
     previousTarget = Game.getObjectById(creep.memory.repairTargetId);
-    if (isValidRepairTarget(previousTarget) {
+    if (isValidRepairTarget(previousTarget)) {
       return previousTarget;
     }
   }
