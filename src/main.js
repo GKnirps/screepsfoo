@@ -4,6 +4,7 @@ const roleUpgrader = require('role.upgrader');
 const roleBuilder = require('role.builder');
 const roleAttacker = require('role.attacker');
 const roleRepairman = require('role.repairman');
+const towerFunctions = require('buildings.tower');
 const creepSpawner = require('spawn.creeps');
 const roles = require('roles');
 
@@ -16,6 +17,15 @@ roleBehaviors[roles.SPAWN_MAINTAINER] = roleSpawnMaintainer;
 roleBehaviors[roles.REPAIRMAN] = roleRepairman;
 
 module.exports.loop = function () {
+    try {
+      _.forEach(Game.spawns, spawn => {
+        const towers = spawn.room.find(FIND_MY_STRUCTURES, {filter: structure => {structure.structureType === STRUCTURE_TOWER});
+        _.forEach(towers, towerFunctions.towerBehavior);
+      });
+    } catch (err) {
+      console.log('Error while doing somethig with the tower. Error: ' + err);
+    }
+
     try {
       creepSpawner.manageCreeps(Game, Memory);
     } catch (err) {

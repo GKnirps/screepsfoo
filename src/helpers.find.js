@@ -25,6 +25,7 @@ const getClosestObjectFromList = function(pos, objects) {
 }
 
 module.exports = {
+    squareDistance: squareDistance,
     getClosestObjectFromList: getClosestObjectFromList,
 
     /**
