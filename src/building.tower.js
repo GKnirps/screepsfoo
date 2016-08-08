@@ -54,5 +54,5 @@ const towerBehavior = function(tower) {
 };
 
 module.exports = {
-  towerBehavior: towerBehavior;
+  towerBehavior: towerBehavior
 };
