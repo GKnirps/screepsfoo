@@ -83,7 +83,7 @@ const associateContainer = function(creep, source) {
     containers = _.filter(objects, object => {
       return object.type === LOOK_STRUCTURES && object[LOOK_STRUCTURES].structureType === STRUCTURE_CONTAINER;
     });
-    if (containers.length === 0) {
+    if (containers.length !== 0) {
       const container = containers[0][LOOK_STRUCTURES];
       creep.memory.containerId = container.id;
 

@@ -45,7 +45,7 @@ const towerBehavior = function(tower) {
         return false;
       }
       return true;
-    });
+    }});
     if (buildingsToRepair.length) {
       const building = findHelpers.getClosestObjectFromList(tower.pos, buildingsToRepair);
       tower.repair(building);
@@ -54,5 +54,5 @@ const towerBehavior = function(tower) {
 };
 
 module.exports = {
-
+  towerBehavior: towerBehavior;
 };

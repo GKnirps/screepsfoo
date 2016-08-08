@@ -33,6 +33,15 @@ const roleSpawnMaintainer = {
                   common.getEnergyFromClosestHarvester(creep);
                 }
             } 
+        } else if (creep.room.energyAvailable === creep.room.energyCapacityAvailable) {
+          // If there are no spawns to fill, maybe we can fill a tower?
+          const towers = creep.room.find(FIND_MY_STRUCTURES, {filter: structure => structure.type === STRUCTURE_TOWER});
+          if (towers.length) {
+            const tower = _.min(towers, tower => tower.energy);
+            if (creep.transfer(tower, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+              creep.moveTo(tower)
+            }
+          }
         } else {
             // TODO: find spawn dynamically here
             creep.moveTo(Game.spawns['Nest']);
