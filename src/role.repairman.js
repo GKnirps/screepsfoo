@@ -2,7 +2,12 @@ const findHelpers = require('helpers.find');
 const common = require('common_behaviors');
 
 const isValidRepairTarget = function(structure) {
-  if (!structure.my && structure.structureType !== STRUCTURE_ROAD && structure.structureType !== STRUCTURE_WALL) {
+  if (
+    !structure.my &&
+    structure.structureType !== STRUCTURE_ROAD &&
+    structure.structureType !== STRUCTURE_WALL &&
+    structure.structureType !== STRUCTURE_CONTAINER
+  ) {
     return false;
   }
   if (structure.structureType === STRUCTURE_WALL || structure.structureType === STRUCTURE_RAMPART) {
