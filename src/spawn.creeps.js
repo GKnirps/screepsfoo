@@ -45,7 +45,7 @@ const costForBody = function(body) {
   return _.reduce(body, (sum, part) => sum + BODYPART_COST[part], 0);
 }
 
-const spawnHarvesterAsNecessary = function(creepCount, spawn, capacity) {
+const spawnHarvesterAsNecessary = function(creepCount, spawn, energy, capacity) {
   const sourcesCount = spawn.room.find(FIND_SOURCES).length;
   // we need no more than one harvester for each source
   const harvesterCount = creepCount[roles.HARVESTER];
@@ -54,13 +54,18 @@ const spawnHarvesterAsNecessary = function(creepCount, spawn, capacity) {
     const basicCost = costForBody(basicConfig);
 
     const capacityLeftForWork = capacity - basicCost;
-    // TODO: this may need work, so large capacities this may end in a problem...
-    const numberOfWorkParts = Math.floor(capacityLeftForWork / BODYPART_COST[WORK]);
+    let numberOfWorkParts = Math.floor(capacityLeftForWork / BODYPART_COST[WORK]);
+    // If we do not have enough energy to spawn more than five parts, just spawn five of them
+    if (numberOfWorkParts > 5 && basicCost + BODYPART_COST[WORK] * numberOfWorkParts > energy) {
+      numberOfWorkParts = 5;
+    }
     
     const body = Array(numberOfWorkParts).fill(WORK).concat(basicConfig);
-    var newName = spawn.createCreep(body, undefined, {role: roles.HARVESTER});
+    const newName = spawn.createCreep(body, undefined, {role: roles.HARVESTER});
     console.log("Spawned new harvester: " + newName);
+    return true;
   }
+  return false;
 }
 
 const spawnCreepsAsNecessary = function(creeps, spawn) {
@@ -85,6 +90,13 @@ const spawnCreepsAsNecessary = function(creeps, spawn) {
       requiredSpawnMaintainers = 2;
     }
     const availableSpawnMaintainers = (roles.SPAWN_MAINTAINER in creepCount) ? creepCount[roles.SPAWN_MAINTAINER] : 0;
+    const availableHarvesters = (roles.HARVESTER in creepCount ? creepCount[roles.HARVESTER] : 0;
+    if (availableSpawnMaintainers > 0 && availableHarvesters === 0) {
+      if (spawnHarvesterAsNecessary(creepCount, spawn, energy, capacity) {
+        // Don't fucking overwrite this with other spawn commands!
+        return;
+      }
+    }
     if (availableSpawnMaintainers < requiredSpawnMaintainers) {
         // if we do not have any spawn maintainer, and not enough to build a big one, build a small one to get things going.
         let maintainerTemplate = ADVANCED_SPAWN_MAINTAINER;
@@ -93,7 +105,9 @@ const spawnCreepsAsNecessary = function(creeps, spawn) {
         }
         var newName = spawn.createCreep(maintainerTemplate, undefined, {role: roles.SPAWN_MAINTAINER});
         console.log("Spawned new spawn maintainer: " + newName);
+        return;
     }
+    spawnHarvestersAsNecessary(creepCount, spawn, energy, capacity);
     if (!(roles.UPGRADER in creepCount) || creepCount[roles.UPGRADER] < 2) {
         var newName = spawn.createCreep(workerTemplate, undefined, {role: roles.UPGRADER});
         console.log("Spawned new upgrader: " + newName);
@@ -115,7 +129,6 @@ const spawnCreepsAsNecessary = function(creeps, spawn) {
         console.log("It's BICYCLE REPAIR MAN!: " + newName);
       }
     }
-    spawnHarvesterAsNecessary(creepCount, spawn, capacity);
 }
 
 const manageCreeps = function(game, memory) {
