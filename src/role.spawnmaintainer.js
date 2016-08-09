@@ -11,7 +11,7 @@ const roleSpawnMaintainer = {
           target = findHelpers.findClosestFillableSpawnOrExtension(creep.room, creep);
         } else {
           // If there are no spawns to fill, maybe we can fill a tower?
-          const towers = creep.room.find(FIND_MY_STRUCTURES, {filter: structure => structure.type === STRUCTURE_TOWER});
+          const towers = creep.room.find(FIND_MY_STRUCTURES, {filter: structure => structure.structureType === STRUCTURE_TOWER});
           if (towers.length) {
             target = _.min(towers, tower => tower.energy);
           }

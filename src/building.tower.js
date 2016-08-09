@@ -41,7 +41,7 @@ const towerBehavior = function(tower) {
         return false;
       }
       // if our energy is below 80%, we only repair close objects (as ist is more efficient)
-      if (relEnergy < 0.8 && findHelper.squareDistance(structure.pos, tower.pos) > 10) {
+      if (relEnergy < 0.8 && findHelpers.squareDistance(structure.pos, tower.pos) > 10) {
         return false;
       }
       return true;
