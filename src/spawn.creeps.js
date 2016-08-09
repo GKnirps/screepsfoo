@@ -90,9 +90,9 @@ const spawnCreepsAsNecessary = function(creeps, spawn) {
       requiredSpawnMaintainers = 2;
     }
     const availableSpawnMaintainers = (roles.SPAWN_MAINTAINER in creepCount) ? creepCount[roles.SPAWN_MAINTAINER] : 0;
-    const availableHarvesters = (roles.HARVESTER in creepCount ? creepCount[roles.HARVESTER] : 0;
+    const availableHarvesters = (roles.HARVESTER in creepCount) ? creepCount[roles.HARVESTER] : 0;
     if (availableSpawnMaintainers > 0 && availableHarvesters === 0) {
-      if (spawnHarvesterAsNecessary(creepCount, spawn, energy, capacity) {
+      if (spawnHarvesterAsNecessary(creepCount, spawn, energy, capacity)) {
         // Don't fucking overwrite this with other spawn commands!
         return;
       }
@@ -107,7 +107,7 @@ const spawnCreepsAsNecessary = function(creeps, spawn) {
         console.log("Spawned new spawn maintainer: " + newName);
         return;
     }
-    spawnHarvestersAsNecessary(creepCount, spawn, energy, capacity);
+    spawnHarvesterAsNecessary(creepCount, spawn, energy, capacity);
     if (!(roles.UPGRADER in creepCount) || creepCount[roles.UPGRADER] < 2) {
         var newName = spawn.createCreep(workerTemplate, undefined, {role: roles.UPGRADER});
         console.log("Spawned new upgrader: " + newName);
