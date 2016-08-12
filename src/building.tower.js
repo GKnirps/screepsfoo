@@ -47,8 +47,16 @@ const towerBehavior = function(tower) {
       return true;
     }});
     if (buildingsToRepair.length) {
-      const building = findHelpers.getClosestObjectFromList(tower.pos, buildingsToRepair);
-      tower.repair(building);
+      const walls = _.filter(buildingsToRepair, building => building === STRUCTURE_WALL);
+      const other = _.filter(buildingsToRepair, building => building !== STRUCTURE_WALL);
+
+      const closestBuilding = findHelpers.getClosestObjectFromList(tower.pos, other);
+      if (closestBuilding) {
+        tower.repair(closestBuilding);
+      } else if (walls.length) {
+        const minWall = _.min(walls, wall => wall.hits);
+        tower.repair(minWall);
+      }
     }
   }
 };
