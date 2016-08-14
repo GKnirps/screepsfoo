@@ -1,4 +1,5 @@
 const roles = require('roles');
+const archetypes = require('archetypes');
 
 const countCreepsByRole = function(creeps) {
     return _.reduce(_.values(creeps), (counter, creep) => {
@@ -61,7 +62,7 @@ const spawnHarvesterAsNecessary = function(creepCount, spawn, energy, capacity) 
     }
     
     const body = Array(numberOfWorkParts).fill(WORK).concat(basicConfig);
-    const newName = spawn.createCreep(body, undefined, {role: roles.HARVESTER});
+    const newName = spawn.createCreep(body, undefined, {role: roles.HARVESTER, archetype: archetypes.STATIONARY_WORKER.name});
     console.log("Spawned new harvester: " + newName);
     return true;
   }
@@ -81,7 +82,10 @@ const spawnCreepsAsNecessary = function(creeps, spawn) {
     // panic mode! spawn attackers with priority if there are enemies
     if (spawn.room.find(FIND_HOSTILE_CREEPS).length > 0) {
       if (!(roles.ATTACKER in creepCount) || creepCount[roles.ATTACKER] < 3) {
-          var newName = spawn.createCreep([ATTACK, ATTACK,MOVE, MOVE], undefined, {role: roles.ATTACKER});
+          var newName = spawn.createCreep([ATTACK, ATTACK,MOVE, MOVE], undefined, {
+            role: roles.ATTACKER,
+            archetype: archetypes.MELEE.name
+          });
           console.log("Spawned new attacker: " + newName);
       }
     }
@@ -103,29 +107,44 @@ const spawnCreepsAsNecessary = function(creeps, spawn) {
         if (energy < 450 && availableSpawnMaintainers === 0) {
           maintainerTemplate = BASIC_SPAWN_MAINTAINER;
         }
-        var newName = spawn.createCreep(maintainerTemplate, undefined, {role: roles.SPAWN_MAINTAINER});
+        var newName = spawn.createCreep(maintainerTemplate, undefined, {
+          role: roles.SPAWN_MAINTAINER,
+          archetype: archetypes.TRANSPORTER.name
+        });
         console.log("Spawned new spawn maintainer: " + newName);
         return;
     }
     spawnHarvesterAsNecessary(creepCount, spawn, energy, capacity);
     if (!(roles.UPGRADER in creepCount) || creepCount[roles.UPGRADER] < 2) {
-        var newName = spawn.createCreep(workerTemplate, undefined, {role: roles.UPGRADER});
+        var newName = spawn.createCreep(workerTemplate, undefined, {
+          role: roles.UPGRADER,
+          archetype: archetypes.MOBILE_WORKER.name
+        });
         console.log("Spawned new upgrader: " + newName);
     }
     if (!(roles.BUILDER in creepCount) || creepCount[roles.BUILDER] < 1) {
         if (spawn.room.find(FIND_CONSTRUCTION_SITES).length > 0) {
-            var newName = spawn.createCreep(workerTemplate, undefined, {role: roles.BUILDER});
+            var newName = spawn.createCreep(workerTemplate, undefined, {
+              role: roles.BUILDER,
+              archetype: archetypes.MOBILE_WORKER.name
+            });
             console.log("Spawned new builder: " + newName);
         }
     }
     if (!(roles.ATTACKER in creepCount) || creepCount[roles.ATTACKER] < 1) {
-        var newName = spawn.createCreep([ATTACK, ATTACK,MOVE, MOVE], undefined, {role: roles.ATTACKER});
+        var newName = spawn.createCreep([ATTACK, ATTACK,MOVE, MOVE], undefined, {
+          role: roles.ATTACKER,
+          archetype: archetypes.MELEE.name
+        });
         console.log("Spawned new attacker: " + newName);
     }
     if (!(roles.REPAIRMAN in creepCount) || creepCount[roles.REPAIRMAN] < 1) {
       // We only start repairing if the room has a minimum capacity
       if (capacity >= 500) {
-        var newName = spawn.createCreep(workerTemplate, undefined, {role: roles.REPAIRMAN});
+        var newName = spawn.createCreep(workerTemplate, undefined, {
+          role: roles.REPAIRMAN,
+          archetype: archetypes.MOBILE_WORKER.name
+        });
         console.log("It's BICYCLE REPAIR MAN!: " + newName);
       }
     }
