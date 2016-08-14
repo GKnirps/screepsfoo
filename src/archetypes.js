@@ -5,26 +5,26 @@ module.exports = {
    * Example: Harvester
    */
   STATIONARY_WORKER: {
-    name: "stationary_worker";
+    name: "stationary_worker"
   },
   /**
    * Creep with a medium number of work and carry parts, and enough move parts to move fast.
    * Example: Builder, Repairman
    */
   MOBILE_WORKER: {
-    name: "mobile_worker";
+    name: "mobile_worker"
   },
   /**
    * Creep with a high number of carry parts, one work part and enough move parts to move fast.
    * Example: spawn maintainer
    */
   TRANSPORTER: {
-    name: "transporter";
+    name: "transporter"
   },
   /**
    * Fast creep with tough, attack and move parts.
    */
   MELEE: {
-    name: "melee";
+    name: "melee"
   }
 };
