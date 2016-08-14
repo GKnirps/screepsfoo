@@ -25,7 +25,7 @@ const roleSpawnMaintainer = {
             }
             if (creep.memory.delivering && creep.carry.energy === 0) {
               creep.memory.delivering = false;
-              creep.memora.harvestTargetId = undefined;
+              creep.memory.harvestTargetId = undefined;
             }
             if(creep.memory.delivering) {
               if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
