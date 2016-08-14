@@ -124,7 +124,7 @@ const roleHarvester = {
       }
       // fill a nearby container if available
       const container = associateContainer(creep, source);
-      if (container) {
+      if (creep.memory.harvesting && container) {
         if (creep.transfer(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
           // The container is always not more than two fields away from the source.
           // This is guaranteed by associateContainer. So at some point, we do not have to move anymore.
