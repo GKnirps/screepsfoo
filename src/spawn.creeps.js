@@ -60,6 +60,9 @@ const spawnHarvesterAsNecessary = function(creepCount, spawn, energy, capacity) 
     if (numberOfWorkParts > 5 && basicCost + BODYPART_COST[WORK] * numberOfWorkParts > energy) {
       numberOfWorkParts = 5;
     }
+    if (numberOfWorkParts > 7) {
+      numberOfWorkParts = 7;
+    }
     
     const body = Array(numberOfWorkParts).fill(WORK).concat(basicConfig);
     const newName = spawn.createCreep(body, undefined, {role: roles.HARVESTER, archetype: archetypes.STATIONARY_WORKER.name});
