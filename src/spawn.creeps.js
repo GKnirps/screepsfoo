@@ -16,18 +16,6 @@ const countCreepsByRole = function(creeps) {
     }, {});
 };
 
-const getRoomSpawnEnergyAndCapacity = function(room) {
-  const spawnsAndExtensions = room.find(FIND_STRUCTURES, {
-    filter: (structure) => {
-      return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN);
-    }
-  });
-
-  return _.reduce(spawnsAndExtensions, (sum, item) => {
-    return [sum[0] + item.energy, sum[1] + item.energyCapacity];
-  }, [0, 0]);
-};
-
 const buryCreeps = function(game, memory) {
     for(var name in memory.creeps) {
         if(!game.creeps[name]) {
@@ -74,7 +62,8 @@ const spawnHarvesterAsNecessary = function(creepCount, spawn, energy, capacity) 
 
 const spawnCreepsAsNecessary = function(creeps, spawn) {
     const creepCount = countCreepsByRole(creeps);
-    const [energy, capacity] = getRoomSpawnEnergyAndCapacity(spawn.room);
+    const energy = spawn.room.energyAvailable;
+    const capacity = spawn.room.energyCapacityAvailable;
 
     // Build bigger workers if possible
     let workerTemplate = BASIC_WORKER;

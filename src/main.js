@@ -8,6 +8,8 @@ const towerFunctions = require('building.tower');
 const creepSpawner = require('spawn.creeps');
 const roles = require('roles');
 
+const SPAWNING_INTERVAL = 10;
+
 const roleBehaviors = {};
 roleBehaviors[roles.HARVESTER] = roleHarvester;
 roleBehaviors[roles.UPGRADER] = roleUpgrader;
@@ -17,19 +19,24 @@ roleBehaviors[roles.SPAWN_MAINTAINER] = roleSpawnMaintainer;
 roleBehaviors[roles.REPAIRMAN] = roleRepairman;
 
 module.exports.loop = function () {
-    try {
-      _.forEach(Game.spawns, spawn => {
-        const towers = spawn.room.find(FIND_MY_STRUCTURES, {filter: structure => structure.structureType === STRUCTURE_TOWER});
-        _.forEach(towers, towerFunctions.towerBehavior);
-      });
-    } catch (err) {
-      console.log('Error while doing something with the tower. Error: ' + err);
-    }
+    // don't check if we need to spawn on every tick (saves processing time)
+    if (Game.time % SPAWNING_INTERVAL == 0) {
+      // we can leave out spawns that are busy
+      const idleSpawns = _.reject(Game.spawns, spawn => spawn.spawning);
+      try {
+        _.forEach(idleSpawns, spawn => {
+          const towers = spawn.room.find(FIND_MY_STRUCTURES, {filter: structure => structure.structureType === STRUCTURE_TOWER});
+          _.forEach(towers, towerFunctions.towerBehavior);
+        });
+      } catch (err) {
+        console.log('Error while doing something with the tower. Error: ' + err);
+      }
 
-    try {
-      creepSpawner.manageCreeps(Game, Memory);
-    } catch (err) {
-      console.log('Error while managing creep spawning. Resuming other tasks. Error: ' + err);
+      try {
+        creepSpawner.manageCreeps(Game, Memory);
+      } catch (err) {
+        console.log('Error while managing creep spawning. Resuming other tasks. Error: ' + err);
+      }
     }
 
     for(var name in Game.creeps) {
