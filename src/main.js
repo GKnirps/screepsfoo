@@ -19,14 +19,16 @@ roleBehaviors[roles.SPAWN_MAINTAINER] = roleSpawnMaintainer;
 roleBehaviors[roles.REPAIRMAN] = roleRepairman;
 
 module.exports.loop = function () {
+    _.forEach(Game.rooms, room => {
+      const towers = room.find(FIND_MY_STRUCTURES, {filter: structure => structure.structureType === STRUCTURE_TOWER});
+      _.forEach(towers, towerFunctions.towerBehavior);
+    });
     // don't check if we need to spawn on every tick (saves processing time)
     if (Game.time % SPAWNING_INTERVAL == 0) {
       // we can leave out spawns that are busy
       const idleSpawns = _.reject(Game.spawns, spawn => spawn.spawning);
       try {
         _.forEach(idleSpawns, spawn => {
-          const towers = spawn.room.find(FIND_MY_STRUCTURES, {filter: structure => structure.structureType === STRUCTURE_TOWER});
-          _.forEach(towers, towerFunctions.towerBehavior);
         });
       } catch (err) {
         console.log('Error while doing something with the tower. Error: ' + err);
