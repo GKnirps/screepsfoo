@@ -48,10 +48,8 @@ const roleRepairman = {
             creep.say('repairing');
         }
         const structure = getStructureToRepair(creep);
-        if (!structure) {
-            // TODO: we can do wall improving if nothing is to be repaired (when we have a wall improver)
-            creep.moveTo(Game.spawns['Nest']);
-        } else {
+        // TODO: we can do wall improving if nothing is to be repaired (when we have a wall improver)
+        if (structure) {
             creep.memory.repairTargetId = structure.id; 
             if(creep.memory.repairing) {
                 if(creep.repair(structure) == ERR_NOT_IN_RANGE) {

@@ -4,5 +4,6 @@ module.exports = {
     BUILDER: 'builder',
     ATTACKER: 'attacker',
     SPAWN_MAINTAINER: 'spawn_maintainer',
-    REPAIRMAN: 'repairman'
+    REPAIRMAN: 'repairman',
+    COLONIZER: 'colonizer'
 };

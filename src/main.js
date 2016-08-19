@@ -4,6 +4,7 @@ const roleUpgrader = require('role.upgrader');
 const roleBuilder = require('role.builder');
 const roleAttacker = require('role.attacker');
 const roleRepairman = require('role.repairman');
+const roleColonizer = require('role.colonizer');
 const towerFunctions = require('building.tower');
 const creepSpawner = require('spawn.creeps');
 const roles = require('roles');
@@ -17,6 +18,7 @@ roleBehaviors[roles.BUILDER] = roleBuilder;
 roleBehaviors[roles.ATTACKER] = roleAttacker;
 roleBehaviors[roles.SPAWN_MAINTAINER] = roleSpawnMaintainer;
 roleBehaviors[roles.REPAIRMAN] = roleRepairman;
+roleBehaviors[roles.COLONIZER] = roleColonizer;
 
 module.exports.loop = function () {
     _.forEach(Game.rooms, room => {
@@ -28,14 +30,7 @@ module.exports.loop = function () {
       // we can leave out spawns that are busy
       const idleSpawns = _.reject(Game.spawns, spawn => spawn.spawning);
       try {
-        _.forEach(idleSpawns, spawn => {
-        });
-      } catch (err) {
-        console.log('Error while doing something with the tower. Error: ' + err);
-      }
-
-      try {
-        creepSpawner.manageCreeps(Game, Memory);
+        creepSpawner.manageCreeps(Game, Memory, idleSpawns);
       } catch (err) {
         console.log('Error while managing creep spawning. Resuming other tasks. Error: ' + err);
       }

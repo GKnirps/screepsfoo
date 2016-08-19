@@ -26,5 +26,11 @@ module.exports = {
    */
   MELEE: {
     name: "melee"
-  }
+  },
+  /**
+   * Creep to claim other rooms.
+   */
+  COLONIZER: {
+    name: "colonizer"
+  },
 };

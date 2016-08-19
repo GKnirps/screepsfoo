@@ -8,10 +8,14 @@ const countCreepsByRole = function(creeps) {
             console.log('Creep ' + creep.name + ' has no role. Cannot count this creep.');
             return counter;
         }
-        if (!(role in counter)) {
-            counter[role] = 0;
+        const roomName = creep.room.name;
+        if (!roomName in counter) {
+          counter[roomName] = {};
         }
-        counter[role] += 1;
+        if (!(role in counter[roomName])) {
+            counter[roomName][role] = 0;
+        }
+        counter[roomName][role] += 1;
         return counter;
     }, {});
 };
@@ -60,8 +64,7 @@ const spawnHarvesterAsNecessary = function(creepCount, spawn, energy, capacity) 
   return false;
 }
 
-const spawnCreepsAsNecessary = function(creeps, spawn) {
-    const creepCount = countCreepsByRole(creeps);
+const spawnCreepsAsNecessary = function(creepCount, spawn) {
     const energy = spawn.room.energyAvailable;
     const capacity = spawn.room.energyCapacityAvailable;
 
@@ -113,6 +116,7 @@ const spawnCreepsAsNecessary = function(creeps, spawn) {
           archetype: archetypes.MOBILE_WORKER.name
         });
         console.log("Spawned new upgrader: " + newName);
+        return;
     }
     if (!(roles.BUILDER in creepCount) || creepCount[roles.BUILDER] < 1) {
         if (spawn.room.find(FIND_CONSTRUCTION_SITES).length > 0) {
@@ -121,6 +125,7 @@ const spawnCreepsAsNecessary = function(creeps, spawn) {
               archetype: archetypes.MOBILE_WORKER.name
             });
             console.log("Spawned new builder: " + newName);
+            return;
         }
     }
     if (!(roles.ATTACKER in creepCount) || creepCount[roles.ATTACKER] < 1) {
@@ -129,6 +134,7 @@ const spawnCreepsAsNecessary = function(creeps, spawn) {
           archetype: archetypes.MELEE.name
         });
         console.log("Spawned new attacker: " + newName);
+        return;
     }
     if (!(roles.REPAIRMAN in creepCount) || creepCount[roles.REPAIRMAN] < 1) {
       // We only start repairing if the room has a minimum capacity
@@ -138,16 +144,19 @@ const spawnCreepsAsNecessary = function(creeps, spawn) {
           archetype: archetypes.MOBILE_WORKER.name
         });
         console.log("It's BICYCLE REPAIR MAN!: " + newName);
+        return;
       }
     }
 }
 
-const manageCreeps = function(game, memory) {
+const manageCreeps = function(game, memory, spawns) {
   buryCreeps(game, memory);
-  spawnCreepsAsNecessary(game.creeps, Game.spawns['Nest']);
+  const creepCountes = countCreepsByRole(game.creeps); 
+  _.forEach(spawns, spawn => {
+    spawnCreepsAsNecessary(creepCounts[spawn.room.name], spawn);
+  }
 }
 
 module.exports = {
-    countCreepsByRole: countCreepsByRole,
     manageCreeps: manageCreeps
 };

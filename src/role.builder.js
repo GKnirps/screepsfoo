@@ -15,9 +15,7 @@ var roleBuilder = {
             creep.say('building');
         }
         const constructionSites = creep.room.find(FIND_CONSTRUCTION_SITES);
-        if (!constructionSites.length) {
-            creep.moveTo(Game.spawns['Nest']);
-        } else {
+        if (constructionSites.length) {
             const cSite = constructionSites[0];
             if(creep.memory.building) {
                 if(creep.build(cSite) == ERR_NOT_IN_RANGE) {

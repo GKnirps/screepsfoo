@@ -43,9 +43,6 @@ const roleSpawnMaintainer = {
                   common.getEnergyFromClosestHarvester(creep);
                 }
             } 
-        } else {
-            // TODO: find spawn dynamically here
-            creep.moveTo(Game.spawns['Nest']);
         }
     }
 };
