@@ -7,10 +7,10 @@ const roleColonizer = {
     run: function(creep) {
         /** fixed target room, for now */
         const room = creep.room;
-        if (room.name === 'WW33N57') {
+        if (room.name === 'W33N57') {
           const x = 49;
           const y = 14;
-          if (room.pos.x !== x || room.pos.y !== y) {
+          if (creep.pos.x !== x || creep.pos.y !== y) {
             creep.moveTo(x,y, {reusePath: 0});
           } else {
             creep.move(RIGHT);
@@ -31,6 +31,9 @@ const roleColonizer = {
             room.createConstructionSite(25,20, STRUCTURE_SPAWN);
           }
           const constructionSites = room.find(FIND_MY_CONSTRUCTION_SITES);
+          if (!creep.memory.state) {
+            creep.memory.state = 'HARVESTING';
+          }
           if (constructionSites.length !== 0) {
             if (creep.memory.state === 'HARVESTING' && creep.carry.energy === creep.carryCapacity) {
               creep.memory.state = 'BUILDING';
@@ -38,7 +41,7 @@ const roleColonizer = {
               creep.memory.state = 'HARVESTING';
             }
             if (creep.memory.state === 'BUILDING') {
-              if (creep.build(constructionsSites[0]) === ERR_NOT_IN_RANGE) {
+              if (creep.build(constructionSites[0]) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(constructionSites[0]);
               }
             } else {

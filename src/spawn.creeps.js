@@ -9,7 +9,7 @@ const countCreepsByRole = function(creeps) {
             return counter;
         }
         const roomName = creep.room.name;
-        if (!roomName in counter) {
+        if (!(roomName in counter)) {
           counter[roomName] = {};
         }
         if (!(role in counter[roomName])) {
@@ -151,10 +151,14 @@ const spawnCreepsAsNecessary = function(creepCount, spawn) {
 
 const manageCreeps = function(game, memory, spawns) {
   buryCreeps(game, memory);
-  const creepCountes = countCreepsByRole(game.creeps); 
+  const creepCounts = countCreepsByRole(game.creeps); 
   _.forEach(spawns, spawn => {
-    spawnCreepsAsNecessary(creepCounts[spawn.room.name], spawn);
-  }
+    let creepCount = creepCounts[spawn.room.name];
+    if (!creepCount) {
+      creepCount = {};
+    }
+    spawnCreepsAsNecessary(creepCount, spawn);
+  })
 }
 
 module.exports = {
